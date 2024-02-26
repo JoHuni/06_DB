@@ -1,0 +1,114 @@
+DB : 데이터 저장하는 프로그램
+
+SQL : DBMS에 작성하는 언어 -> 작성한 내용에 맞게 DBMS가 DB 조작
+
+DBMS(Database Management System) : DB 데이터 추출, 조작, 정의, 제어하는 프로그램
+
+데이터베이스 주요 데이터 타입
+문자열
+    - 고정 : CHAR
+    - 가변 : VARCHAR
+숫자
+날짜
+큰 데이터
+
+----------------------------------------------------------------------
+
+DB 문법 정리(아리까리한거 위주)
+
+컬럼 값에다가 연산해서 출력 가능
+EX) SELECT SALARY * 12 FROM EMPLOYEE
+-> AS 써서 출력할때 모습 바꾸기
+EX) SELECT SALARY * 12 AS '연봉' FROM EMPLOYEE
+--> AS 쓰던 말던 상관은 없는데 띄어쓰기 혹은 특수문자가 들어갈 경우 '' 안에다 작성
+
+DUAL 테이블 : 더미 테이블(DUmmy tAbLe)의 줄임으로
+ 실존하는 테이블이 아니라 단순 데이터 조회 목적으로 사용
+SELECT SYSDATE FROM DUAL => DUAL이라는 허상 테이블에서 현재 시간을 추출
+
+SYSDATE : 현재 시간을 나타낼 때 사용
+
+날짜끼리 연산도 가능
+날짜 - 날짜 = 일 단위 숫자
+1 == 1일 차이, 1.5 ==  1일 12시간 차이
+SELECT  (SYSDATE - TO_DATE('2001-11-11', 'YYYY-MM-DD')) / 365
+== 내가 몇살인지 구하는 식임 
+
+TO_DATE() : ('문자열', '패턴')식으로 해석해서 DATE 타입으로 변경하는 함수
+EX) TO_DATE('2001-11-11', 'YYYY-MM-DD') 
+
+CEIL(씰) : 올림 처리
+
+SELECT CEIL((SYSDATE - TO_DATE('2001-11-11', 'YYYY-DD-MM')) / 365)
+FROM DUAL;
+==  씰 안 하면23.~~~~ 이렇게 나오는데
+씰로 처리하면 23으로 나옴
+
+연결 연산자(||) : 문자열 이어씀
+SELECT NAME || BIRTHDAY FROM ME
+== 조훈희011111
+
+'문자열', 100
+컬럼명 자리에 작성한 리터럴 값이 추가됨
+== 모든 결과에 '문자열'과 100이 추가되어 출력됨
+
+||이랑 같이 쓸 수도 있는데
+SELECT 급여 || '원' FROM EMPLOYEE
+이렇게 되어있으면
+급여가 30만원일때
+300000원 이라고 출력됨
+
+DISTINCT : 중복된 값을 제거함
+중복된 컬럼을 하나만 표시함
+부서가 뭐가 있는지 조회할 때, 부서의 중복을 하나만 출력
+SELECT DISTINCT DEPT_CODE FROM EMPLOYEE
+
+IS NULL
+IS NOT NULL
+NULL만 출력하거나 NULL이 아닌 것만 출력하거나
+--> 오라클에선 NULL이 값이 비어있음임
+
+BETWEEN A AND B : 컬럼의 값이 A이상 B이하면 TRUE
+NOT BETWEEN A AND B : A 미만 또는 B 초과시 TRUE
+
+날짜도 계싼이 가능한데, 날짜끼리만 가능
+EX)
+SELECT NAME
+FROM EMPLOYEE
+WHERE BIRTHDAY BETWEEN
+TO_DATE(2001-11-11, YYYY:MM:DD)
+AND TO_DATE(2001-12-31, YYYY:MM:DD)
+
+컬럼명 IN(V1, V2, V3, ....) : 컬럼의 값이 ()안의 내용과 일치하면 TRUE, 아니면 FALSE
+
+SELECT NAME
+FROM EMPLOYEE
+WHERE NAME IN('조훈희', '박성준')  --> 값을 여려개 조회할 때 사용 조훈희, 박성준 이름을 가진 컬럼의 이름 출력
+
+LIKE
+LIKE '%희 ' 맨 끝이 '희'로 끝나고 앞에 뭐가 와도 조또 상관X
+
+LIKE '조%' 맨 앞이 '조'로 시작하고 뒤에 뭐가 오든 조또 상관X
+
+LIKE '%훈%' : 이름에 '훈'이 들어가고 앞, 뒤에 뭐가 와도 조또 상관X
+
+LIKE '조%희' : '조'로 시작하고 '희'로 끝나고 사이에 뭐가 와도 조또 상관X
+
+'__A' : 언더바 개수가 문자 길이임 => A 앞에 2개 문자열을 가진 문자 출력
+EX) 훈희A
+EX) 바보A
+EX ) 'A_' : A오
+
+ESCAPE : '_'와 같이 구분된 문자열을 출력하고 싶을 때
+'_'는 LIKE의 문법이라 구분자가 아니라 문법의 언더바로 들어감
+그래서 자르고 싶은 곳에 ESCAPE문자를 써야됨
+ESCAPE문자는 특수문자 아무 거나 넣어도 됨
+이메일 언더바 앞에 3글자 뒤에 2글자를 언더바로 자르고 싶을 떄
+JOO_HN =>
+SELECT EMAIL FROM EMPLOYEE
+WHERE EMAIL LIKE '___$_' ESCAPE '$';
+
+ 
+
+
+

@@ -137,7 +137,7 @@ SELECT EMP_ID || EMP_NAME FROM EMPLOYEE;
 /* 컬럼명 자리에 리터럴 직접 작성 */
 -- 조회 결과(RESULT SET)의 모든 행에 
 -- 컬럼명 자리에 작성한 리터럴 값이 추가된다!
-SELECT EMP_NAME, SALARY, '원', 100, SYSDATE FROM EMPLOYEE; 
+SELECT EMP_NAME, SALARY || '원', '원', 100, SYSDATE FROM EMPLOYEE; 
 
 --------------------------------------------------------------------------
 
